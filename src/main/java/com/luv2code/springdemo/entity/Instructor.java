@@ -3,12 +3,12 @@ package com.luv2code.springdemo.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "student")
-public class Student {
+@Table(name="instructor")
+public class Instructor {
 
     @Id
-    @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
 
     @Column(name = "first_name")
@@ -17,27 +17,34 @@ public class Student {
     @Column(name = "last_name")
     private String lastName;
 
-    public Student(String firstName, String lastName, String email) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
+    @Column(name = "email")
+    private String  email;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "instructor_detail_id")
+    private InstructorDetail instructorDetail;
+
+    public Instructor(InstructorDetail instructorDetail) {
+        this.instructorDetail = instructorDetail;
     }
-
-    public Student(){
-
-    }
-
-    @Column
-    private String email;
 
     @Override
     public String toString() {
-        return "Student{" +
+        return "Instructor{" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
+                ", instructorDetail=" + instructorDetail +
                 '}';
+    }
+
+    public InstructorDetail getInstructorDetail() {
+        return instructorDetail;
+    }
+
+    public void setInstructorDetail(InstructorDetail instructorDetail) {
+        this.instructorDetail = instructorDetail;
     }
 
     public int getId() {
@@ -69,6 +76,12 @@ public class Student {
     }
 
     public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Instructor(String firstName, String lastName, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
     }
 }
